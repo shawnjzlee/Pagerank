@@ -33,7 +33,7 @@ void parse_data(AdjacencyList pagerank, string dataset) {
         
         // cout << source << " " << neighbor << endl;
         
-        
+        pagerank.create_list(source, neighbor);
     }
 }
 

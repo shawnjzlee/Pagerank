@@ -18,7 +18,9 @@ class AdjacencyList : public ThreadData {
         void set_thread_id(int);
         
         void create_vertex();
-        void create_list();
+        void create_list(int, int);
+        
+        void print_list();
         
     private:
         map <int, vector<int>> incoming_edges;    // map of edge list <vertex id, incoming vertices>
