@@ -5,7 +5,7 @@
 
 using namespace std;
 
-AdjacencyList::AdjacencyList() { }
+AdjacencyList::AdjacencyList() {  }
 
 AdjacencyList::~AdjacencyList() { }
 
@@ -27,12 +27,18 @@ void AdjacencyList::create_vertex() {
 }
 
 void AdjacencyList::create_list(int source, int neighbor) {
-    if(vertex_rank.empty()) vertex_rank.push_back(1);
-    else vertex_rank.push_back(0);
+    if (incoming_edges.empty()) {
+        vertex_rank.push_back(1.0);
+        incoming_edges.push_back(vector<int>());
+        cout << "size: " << incoming_edges.size() << "; source: " << source << endl;
+    }
+    else if (incoming_edges.size() == source) {
+        vertex_rank.push_back(1.0);
+        incoming_edges.push_back(vector<int>());
+        cout << "size: " << incoming_edges.size() << "; source: " << source << endl;
+    }
     
-    incoming_edges[source].push_back(neighbor);
-    
-    print_list();
+    incoming_edges.at(source).push_back(neighbor);
 }
 
 void AdjacencyList::print_list() {

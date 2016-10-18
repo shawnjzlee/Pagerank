@@ -28,3 +28,6 @@ copy:
 	
 check:
 	./$(EXECUTABLE) ${ARGS}
+	
+check_d:
+	gdb --args $(EXECUTABLE) ${ARGS}
