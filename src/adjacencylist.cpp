@@ -27,9 +27,9 @@ void AdjacencyList::create_vertex() {
 }
 
 void AdjacencyList::create_list(int source, int neighbor) {
-    cout << "Source: " << source << "\t Neighbor: " << neighbor << "\t IE.size(): " << incoming_edges.size() << endl;
+    // cout << "Source: " << source << "\t Neighbor: " 
+    //      << neighbor << "\t IE.size(): " << incoming_edges.size() << endl;
     if(incoming_edges.empty()) {
-        // cout << "Enters .empty\n";
         if (source == neighbor) return;
         else if(source < neighbor) {
             incoming_edges.resize(neighbor + 1, vector<int>());
@@ -41,7 +41,6 @@ void AdjacencyList::create_list(int source, int neighbor) {
         }
     } 
     else if (incoming_edges.size() <= source || incoming_edges.size() <= neighbor) {
-        // cout << "Enters normal\n";
         if (source == neighbor) return;
         else if (source < neighbor) {
             incoming_edges.resize(neighbor + 1, vector<int>());
@@ -58,8 +57,10 @@ void AdjacencyList::create_list(int source, int neighbor) {
 
 void AdjacencyList::print_list() {
     for(int i = 0; i < incoming_edges.size(); i++) {
-        for(int j = 0; j < incoming_edges[i].size(); j++)
-            cout << incoming_edges[i].at(j) << " ";
-        cout << endl;
+        for(int j = 0; j < incoming_edges[i].size(); j++) {
+                cout << incoming_edges[i].at(j) << " ";
+        }
+        if(!incoming_edges[i].empty())
+            cout << endl;
     }
 }
