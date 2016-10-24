@@ -52,7 +52,7 @@ void AdjacencyList::create_list(int source, int neighbor) {
         }
     }
     
-    incoming_edges.at(source).push_back(neighbor);
+    incoming_edges.at(neighbor).push_back(source);
 }
 
 void AdjacencyList::print_list() {
@@ -63,4 +63,9 @@ void AdjacencyList::print_list() {
         if(!incoming_edges[i].empty())
             cout << endl;
     }
+}
+
+void AdjacencyList::print_one_list(int index) {
+    for(int i = 0; i < incoming_edges[index].size(); i++)
+        cout << incoming_edges[index].at(i) << " ";
 }

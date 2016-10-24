@@ -33,8 +33,8 @@ void parse_data(AdjacencyList pagerank, string dataset) {
         ss >> source >> neighbor;
         
         pagerank.create_list(source, neighbor);
-        pagerank.print_list();
     }
+    pagerank.print_one_list(0);
 }
 
 int main(int argc, char *argv[]) {

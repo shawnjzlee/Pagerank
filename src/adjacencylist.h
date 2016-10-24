@@ -21,6 +21,7 @@ class AdjacencyList : public ThreadData {
         void create_list(int, int);
         
         void print_list();
+        void print_one_list(int);
     private:
         vector <vector<int>> incoming_edges;    // map of edge list <vertex id, incoming vertices>
         vector <double> vertex_rank;            // vector stores vertex rank
