@@ -22,8 +22,8 @@ void AdjacencyList::set_thread_id(int thread_id) {
     this->thread_id = thread_id;
 }
 
-void AdjacencyList::create_vertex() {
-    
+void AdjacencyList::set_vertex_rank(int index, function<double ()> const &calculate_rank) {
+    vertex_rank.at(index) = calculate_rank ();
 }
 
 void AdjacencyList::create_list(int source, int neighbor) {
@@ -57,15 +57,24 @@ void AdjacencyList::create_list(int source, int neighbor) {
 
 void AdjacencyList::print_list() {
     for(int i = 0; i < incoming_edges.size(); i++) {
-        for(int j = 0; j < incoming_edges[i].size(); j++) {
-                cout << incoming_edges[i].at(j) << " ";
-        }
-        if(!incoming_edges[i].empty())
+        if(!incoming_edges[i].empty()) {
+            cout << "Vertex: " << i << "\t";
+            for(int j = 0; j < incoming_edges[i].size(); j++) {
+                    cout << incoming_edges[i].at(j) << " ";
+            }
             cout << endl;
+        }
     }
 }
 
 void AdjacencyList::print_one_list(int index) {
     for(int i = 0; i < incoming_edges[index].size(); i++)
         cout << incoming_edges[index].at(i) << " ";
+    cout << endl;
+}
+
+void AdjacencyList::print_vertex_ranks() {
+    for(int i = 0; i < vertex_rank.size(); i++)
+        cout << vertex_rank.at(i) << " ";
+    cout << endl;
 }
