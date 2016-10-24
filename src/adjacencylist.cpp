@@ -53,6 +53,7 @@ void AdjacencyList::create_list(int source, int neighbor) {
     }
     
     incoming_edges.at(neighbor).push_back(source);
+    outgoing_edges.at(source).push_back(neighbor);
 }
 
 void AdjacencyList::print_list() {

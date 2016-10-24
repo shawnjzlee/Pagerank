@@ -28,8 +28,9 @@ class AdjacencyList : public ThreadData {
     
     // temporary
     // private:
-        vector <vector<int>> incoming_edges;    // map of edge list <vertex id, incoming vertices>
-        vector <double> vertex_rank;            // vector stores vertex rank
+        vector <vector<int>> incoming_edges;
+        vector <vector<int>> outgoing_edges;
+        vector <double> vertex_rank;
         
         char buff[100];
 };

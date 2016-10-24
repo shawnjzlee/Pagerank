@@ -35,7 +35,7 @@ void rank_distribution(AdjacencyList pagerank) {
                             [&pagerank, &new_rank](int &n){ new_rank += (double)pagerank.vertex_rank.at(n); });
                     
                     // "pagerank.incoming_edges[i].size()" should be outgoing, not incoming
-                    new_rank += ALPHA + (BETA * (new_rank / pagerank.incoming_edges[i].size()));
+                    new_rank += ALPHA + (BETA * (new_rank / pagerank.outgoing_edges[i].size()));
                     return new_rank;
                 }
             );
