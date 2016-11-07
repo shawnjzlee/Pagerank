@@ -23,47 +23,31 @@ void AdjacencyList::set_thread_id(int thread_id) {
 }
 
 void AdjacencyList::set_vertex_rank(int index, function<double ()> const &calculate_rank) {
-    double new_rank = calculate_rank();
-    // verbose for testing
-    cout << "new rank: " << new_rank << " ";
-    vertex_rank.at(index) = new_rank;
+    vertex_rank.at(index) = calculate_rank();
 }
 
-void AdjacencyList::create_list(int source, int neighbor) {
-    // cout << "Source: " << source << "\t Neighbor: " 
-    //      << neighbor << "\t IE.size(): " << incoming_edges.size() << endl;
+void AdjacencyList::insert_edge(int source, int destination) {
+    if(source == destination) return;
+    
+    auto temp = (source < destination ? destination : source);
     if(incoming_edges.empty()) {
-        if (source == neighbor) return;
-        else if(source < neighbor) {
-            incoming_edges.resize(neighbor + 1, vector<int>());
-            outgoing_edges.resize(neighbor + 1, vector<int>());
-            vertex_rank.resize(neighbor + 1, 1.0);
-        }
-        else {
-            incoming_edges.resize(source + 1, vector<int>());
-            outgoing_edges.resize(source + 1, vector<int>());
-            vertex_rank.resize(source, 1.0);
-        }
+        incoming_edges.resize(temp + 1, vector<int>());
+        outgoing_edges.resize(temp + 1, vector<int>());
+        vertex_rank.resize(temp + 1, 1.0);
     } 
-    else if (incoming_edges.size() <= source || incoming_edges.size() <= neighbor) {
-        if (source == neighbor) return;
-        else if (source < neighbor) {
-            incoming_edges.resize(neighbor + 1, vector<int>());
-            outgoing_edges.resize(neighbor + 1, vector<int>());
-            vertex_rank.resize(neighbor + 1, 1.0);
-        }
-        else {
-            incoming_edges.resize(source + 1, vector<int>());
-            outgoing_edges.resize(source + 1, vector<int>());
-            vertex_rank.resize(source + 1, 1.0);
-        }
+    else if (incoming_edges.size() <= source || incoming_edges.size() <= destination) {
+        incoming_edges.resize(temp + 1, vector<int>());
+        outgoing_edges.resize(temp + 1, vector<int>());
+        vertex_rank.resize(temp + 1, 1.0);
     }
     
-    incoming_edges.at(neighbor).push_back(source);
-    outgoing_edges.at(source).push_back(neighbor);
+    incoming_edges.at(destination).push_back(source);
+    outgoing_edges.at(source).push_back(destination);
 }
 
+// static reference function, reference to ostream
 void AdjacencyList::print_list() {
+    //reference to ostream
     for(int i = 0; i < incoming_edges.size(); i++) {
         if(!incoming_edges[i].empty()) {
             cout << "Vertex: " << i << "\t";
@@ -83,6 +67,6 @@ void AdjacencyList::print_one_list(int index) {
 
 void AdjacencyList::print_vertex_ranks() {
     for(int i = 0; i < vertex_rank.size(); i++)
-        cout << i << "\t" << (double)vertex_rank.at(i) << endl;
+        cout << i << "\t" << vertex_rank.at(i) << endl;
     cout << endl;
 }
