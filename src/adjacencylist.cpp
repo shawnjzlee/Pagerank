@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 #include "adjacencylist.h"
 //#include "global.h"
@@ -6,6 +9,24 @@
 using namespace std;
 
 AdjacencyList::AdjacencyList() {  }
+
+AdjacencyList::AdjacencyList(string dataset) {
+    ifstream instream;
+    instream.open(dataset.c_str());
+    if(!instream.is_open()) {
+        throw std::runtime_error(string("Could not open file ") + dataset);
+    }
+    
+    string line;
+    int source, destination;
+    while(getline(instream, line)) {
+        if(line.at(0) == '#') continue;
+        stringstream ss(line);
+        ss >> source >> destination;
+        
+        insert_edge(source, destination);
+    }
+}
 
 AdjacencyList::~AdjacencyList() { }
 

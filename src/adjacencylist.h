@@ -12,6 +12,7 @@ using namespace std;
 class AdjacencyList : public ThreadData {
     public:
         AdjacencyList();
+        AdjacencyList(string);
         ~AdjacencyList();
         
         void thread_data_init(int, bool);
