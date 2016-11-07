@@ -21,7 +21,7 @@ using namespace std::chrono;
 
 void rank_distribution(AdjacencyList pagerank) {
     double difference = 1.0, max_difference = 1.0;
-    while (max_difference > 0.01) {
+    while (max_difference > 0.0001) {
         for (int i = 0; i < pagerank.incoming_edges.size(); i++) {
             double temp = pagerank.vertex_rank.at(i);
             double new_rank = 0.0;
@@ -36,8 +36,8 @@ void rank_distribution(AdjacencyList pagerank) {
                 }
             );
             difference = abs(double(temp - new_rank));
+            // cout << "Difference: " << difference << " ";
             if (difference < max_difference) {
-                // cout << "Difference: " << difference << " ";
                 max_difference = difference;
             }
         }
@@ -64,18 +64,18 @@ void parse_data(AdjacencyList pagerank, string dataset) {
     rank_distribution(pagerank);
     // pagerank.print_list();
     // cout << pagerank.incoming_edges.size() << endl;
-    // pagerank.print_one_list(0);
-    // pagerank.print_one_list(1);
-    // pagerank.print_one_list(2);
-    // pagerank.print_one_list(3);
-    // pagerank.print_one_list(4);
-    // pagerank.print_one_list(5);
-    // pagerank.print_one_list(6);
-    // pagerank.print_one_list(7);
-    // pagerank.print_one_list(8);
-    // pagerank.print_one_list(9);
-    // pagerank.print_one_list(10);
-    // pagerank.print_vertex_ranks();
+    pagerank.print_one_list(0);
+    pagerank.print_one_list(1);
+    pagerank.print_one_list(2);
+    pagerank.print_one_list(3);
+    pagerank.print_one_list(4);
+    pagerank.print_one_list(5);
+    pagerank.print_one_list(6);
+    pagerank.print_one_list(7);
+    pagerank.print_one_list(8);
+    pagerank.print_one_list(9);
+    pagerank.print_one_list(10);
+    pagerank.print_vertex_ranks();
 }
 
 int main(int argc, char *argv[]) {
