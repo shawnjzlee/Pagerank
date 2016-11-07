@@ -33,10 +33,12 @@ void AdjacencyList::create_list(int source, int neighbor) {
         if (source == neighbor) return;
         else if(source < neighbor) {
             incoming_edges.resize(neighbor + 1, vector<int>());
+            outgoing_edges.resize(neighbor + 1, vector<int>());
             vertex_rank.resize(neighbor + 1, 1.0);
         }
         else {
-            incoming_edges.resize(source, vector<int>());
+            incoming_edges.resize(source + 1, vector<int>());
+            outgoing_edges.resize(source + 1, vector<int>());
             vertex_rank.resize(source, 1.0);
         }
     } 
@@ -44,10 +46,12 @@ void AdjacencyList::create_list(int source, int neighbor) {
         if (source == neighbor) return;
         else if (source < neighbor) {
             incoming_edges.resize(neighbor + 1, vector<int>());
+            outgoing_edges.resize(neighbor + 1, vector<int>());
             vertex_rank.resize(neighbor + 1, 1.0);
         }
         else {
             incoming_edges.resize(source + 1, vector<int>());
+            outgoing_edges.resize(source + 1, vector<int>());
             vertex_rank.resize(source + 1, 1.0);
         }
     }

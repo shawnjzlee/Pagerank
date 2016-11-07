@@ -19,28 +19,25 @@
 using namespace std;
 using namespace std::chrono;
 
-#define CONVERGENCE 0.01
-#define ALPHA 0.15
-#define BETA 0.85
-
 void rank_distribution(AdjacencyList pagerank) {
     double difference = 1.0, max_difference = 1.0;
-    while (max_difference > CONVERGENCE) {
+    while (max_difference > 0.01) {
         for (int i = 0; i < pagerank.incoming_edges.size(); i++) {
             double temp = pagerank.vertex_rank.at(i);
             double new_rank = 0.0;
             pagerank.set_vertex_rank(i, 
-                [&pagerank, &i, &new_rank](void)->double {
-                    for_each(pagerank.incoming_edges[i].begin(), pagerank.incoming_edges[i].end(), 
-                            [&pagerank, &new_rank](int &n){ new_rank += (double)pagerank.vertex_rank.at(n); });
-                    
-                    // "pagerank.incoming_edges[i].size()" should be outgoing, not incoming
-                    new_rank += ALPHA + (BETA * (new_rank / pagerank.outgoing_edges[i].size()));
+                [&](void)->double {
+                    for(int j = 0; j < pagerank.incoming_edges[i].size(); j++) {
+                        new_rank += (double)pagerank.vertex_rank.at(pagerank.incoming_edges[i].at(j));
+                    }
+                    new_rank = 0.15 + (0.85 * (new_rank / pagerank.outgoing_edges[i].size()));
+                    // cout << new_rank << " ";
                     return new_rank;
                 }
             );
             difference = abs(double(temp - new_rank));
-            if (difference < max_difference && (difference != difference)) {
+            if (difference < max_difference) {
+                // cout << "Difference: " << difference << " ";
                 max_difference = difference;
             }
         }
@@ -64,7 +61,7 @@ void parse_data(AdjacencyList pagerank, string dataset) {
         pagerank.create_list(source, neighbor);
     }
     
-    // rank_distribution(pagerank);
+    rank_distribution(pagerank);
     // pagerank.print_list();
     // cout << pagerank.incoming_edges.size() << endl;
     // pagerank.print_one_list(0);
