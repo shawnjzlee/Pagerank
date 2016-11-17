@@ -50,16 +50,29 @@ void AdjacencyList::set_vertex_rank(int index, function<double ()> const &calcul
 void AdjacencyList::insert_edge(int source, int destination) {
     if(source == destination) return;
     
-    auto temp = (source < destination ? destination : source);
     if(incoming_edges.empty()) {
-        incoming_edges.resize(temp + 1, vector<int>());
-        outgoing_edges.resize(temp + 1, vector<int>());
-        vertex_rank.resize(temp + 1, 1.0);
+        if(source < destination) {
+            incoming_edges.resize(destination + 1, vector<int>());
+            outgoing_edges.resize(destination + 1, vector<int>());
+            vertex_rank.resize(destination + 1, 1.0);
+        }
+        else {
+            incoming_edges.resize(source + 1, vector<int>());
+            outgoing_edges.resize(source + 1, vector<int>());
+            vertex_rank.resize(source, 1.0);
+        }
     } 
     else if (incoming_edges.size() <= source || incoming_edges.size() <= destination) {
-        incoming_edges.resize(temp + 1, vector<int>());
-        outgoing_edges.resize(temp + 1, vector<int>());
-        vertex_rank.resize(temp + 1, 1.0);
+        if (source < destination) {
+            incoming_edges.resize(destination + 1, vector<int>());
+            outgoing_edges.resize(destination + 1, vector<int>());
+            vertex_rank.resize(destination + 1, 1.0);
+        }
+        else {
+            incoming_edges.resize(source + 1, vector<int>());
+            outgoing_edges.resize(source + 1, vector<int>());
+            vertex_rank.resize(source + 1, 1.0);
+        }
     }
     
     incoming_edges.at(destination).push_back(source);

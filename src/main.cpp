@@ -32,7 +32,6 @@ void rank_distribution(AdjacencyList& graph) {
                         new_rank += (double)graph.vertex_rank.at(graph.incoming_edges[i].at(j));
                     }
                     new_rank = (0.15 + (0.85 * new_rank)) / graph.outgoing_edges[i].size();
-                    cout << new_rank << " ";
                     return new_rank;
                 }
             );
@@ -42,7 +41,6 @@ void rank_distribution(AdjacencyList& graph) {
                 max_difference = difference;
             }
         }
-        cout << "Iteration " << iteration++ << " completed" << endl;
     }
 }
 
