@@ -1,3 +1,6 @@
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -18,13 +21,14 @@ AdjacencyList::AdjacencyList(string dataset) {
     }
     
     string line;
-    int source, destination;
+
+    int src, dst;
     while(getline(instream, line)) {
         if(line.at(0) == '#') continue;
         stringstream ss(line);
-        ss >> source >> destination;
+        ss >> src >> dst;
         
-        insert_edge(source, destination);
+        insert_edge(src, dst);
     }
 }
 
@@ -47,36 +51,24 @@ void AdjacencyList::set_vertex_rank(int index, function<double ()> const &calcul
     vertex_rank.at(index) = calculate_rank();
 }
 
-void AdjacencyList::insert_edge(int source, int destination) {
-    if(source == destination) return;
+void AdjacencyList::insert_edge(int src, int dst) {
+    if (src == dst) return;
+
+    auto temp = (src < dst ? dst : src);
     
     if(incoming_edges.empty()) {
-        if(source < destination) {
-            incoming_edges.resize(destination + 1, vector<int>());
-            outgoing_edges.resize(destination + 1, vector<int>());
-            vertex_rank.resize(destination + 1, 1.0);
-        }
-        else {
-            incoming_edges.resize(source + 1, vector<int>());
-            outgoing_edges.resize(source + 1, vector<int>());
-            vertex_rank.resize(source, 1.0);
-        }
+        incoming_edges.resize(temp + 1, vector<int>());
+        outgoing_edges.resize(temp + 1, vector<int>());
+        vertex_rank.resize(temp + 1, 1.0);
     } 
-    else if (incoming_edges.size() <= source || incoming_edges.size() <= destination) {
-        if (source < destination) {
-            incoming_edges.resize(destination + 1, vector<int>());
-            outgoing_edges.resize(destination + 1, vector<int>());
-            vertex_rank.resize(destination + 1, 1.0);
-        }
-        else {
-            incoming_edges.resize(source + 1, vector<int>());
-            outgoing_edges.resize(source + 1, vector<int>());
-            vertex_rank.resize(source + 1, 1.0);
-        }
+    else if (incoming_edges.size() <= src || incoming_edges.size() <= dst) {
+        incoming_edges.resize(temp + 1, vector<int>());
+        outgoing_edges.resize(temp + 1, vector<int>());
+        vertex_rank.resize(temp + 1, 1.0);
     }
     
-    incoming_edges.at(destination).push_back(source);
-    outgoing_edges.at(source).push_back(destination);
+    incoming_edges.at(dst).push_back(src);
+    outgoing_edges.at(src).push_back(dst);
 }
 
 // static reference function, reference to ostream
