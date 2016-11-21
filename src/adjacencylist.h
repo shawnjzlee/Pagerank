@@ -12,6 +12,7 @@ using namespace std;
 class AdjacencyList : public ThreadData {
     public:
         AdjacencyList();
+        AdjacencyList(string);
         ~AdjacencyList();
         
         void thread_data_init(int, bool);
@@ -20,7 +21,7 @@ class AdjacencyList : public ThreadData {
         
         void set_vertex_rank(int, function<double ()> const&);
         
-        void create_list(int, int);
+        void insert_edge(int, int);
         
         void print_list();
         void print_one_list(int);

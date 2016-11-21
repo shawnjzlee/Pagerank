@@ -1,3 +1,6 @@
+#include <fstream>
+#include <sstream>
+#include <string>
 #include <iostream>
 
 #include "adjacencylist.h"
@@ -6,6 +9,24 @@
 using namespace std;
 
 AdjacencyList::AdjacencyList() {  }
+
+AdjacencyList::AdjacencyList(string dataset) {
+    ifstream instream;
+    instream.open(dataset.c_str());
+    if(!instream.is_open()) {
+        throw std::runtime_error(string("Could not open file ") + dataset);
+    }
+    
+    string line;
+    int src, dst;
+    while(getline(instream, line)) {
+        if(line.at(0) == '#') continue;
+        stringstream ss(line);
+        ss >> src >> dst;
+        
+        insert_edge(src, dst);
+    }
+}
 
 AdjacencyList::~AdjacencyList() { }
 
@@ -23,44 +44,39 @@ void AdjacencyList::set_thread_id(int thread_id) {
 }
 
 void AdjacencyList::set_vertex_rank(int index, function<double ()> const &calculate_rank) {
-    double new_rank = calculate_rank();
-    // verbose for testing
-    cout << "new rank: " << new_rank << " ";
-    vertex_rank.at(index) = new_rank;
+    vertex_rank.at(index) = calculate_rank();
 }
 
-void AdjacencyList::create_list(int source, int neighbor) {
-    // cout << "Source: " << source << "\t Neighbor: " 
-    //      << neighbor << "\t IE.size(): " << incoming_edges.size() << endl;
+void AdjacencyList::insert_edge(int src, int dst) {
+    if (src == dst) return;
+    
     if(incoming_edges.empty()) {
-        if (source == neighbor) return;
-        else if(source < neighbor) {
-            incoming_edges.resize(neighbor + 1, vector<int>());
-            outgoing_edges.resize(neighbor + 1, vector<int>());
-            vertex_rank.resize(neighbor + 1, 1.0);
+        if(src < dst) {
+            incoming_edges.resize(dst + 1, vector<int>());
+            outgoing_edges.resize(dst + 1, vector<int>());
+            vertex_rank.resize(dst + 1, 1.0);
         }
         else {
-            incoming_edges.resize(source + 1, vector<int>());
-            outgoing_edges.resize(source + 1, vector<int>());
-            vertex_rank.resize(source, 1.0);
+            incoming_edges.resize(src + 1, vector<int>());
+            outgoing_edges.resize(src + 1, vector<int>());
+            vertex_rank.resize(src, 1.0);
         }
     } 
-    else if (incoming_edges.size() <= source || incoming_edges.size() <= neighbor) {
-        if (source == neighbor) return;
-        else if (source < neighbor) {
-            incoming_edges.resize(neighbor + 1, vector<int>());
-            outgoing_edges.resize(neighbor + 1, vector<int>());
-            vertex_rank.resize(neighbor + 1, 1.0);
+    else if (incoming_edges.size() <= src || incoming_edges.size() <= dst) {
+        if (src < dst) {
+            incoming_edges.resize(dst + 1, vector<int>());
+            outgoing_edges.resize(dst + 1, vector<int>());
+            vertex_rank.resize(dst + 1, 1.0);
         }
         else {
-            incoming_edges.resize(source + 1, vector<int>());
-            outgoing_edges.resize(source + 1, vector<int>());
-            vertex_rank.resize(source + 1, 1.0);
+            incoming_edges.resize(src + 1, vector<int>());
+            outgoing_edges.resize(src + 1, vector<int>());
+            vertex_rank.resize(src + 1, 1.0);
         }
     }
     
-    incoming_edges.at(neighbor).push_back(source);
-    outgoing_edges.at(source).push_back(neighbor);
+    incoming_edges.at(dst).push_back(src);
+    outgoing_edges.at(src).push_back(dst);
 }
 
 void AdjacencyList::print_list() {
