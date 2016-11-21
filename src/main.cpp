@@ -21,7 +21,7 @@ using namespace std::chrono;
 
 void rank_distribution(AdjacencyList& graph) {
     double difference = 1.0, max_difference = 1.0;
-    while (max_difference > 0.0001) {
+    while (max_difference > 0.01) {
         for (int i = 0; i < graph.incoming_edges.size(); i++) {
             double temp = graph.vertex_rank.at(i);
             double new_rank = 0.0;
